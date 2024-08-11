@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "documents",
+  "info": {
+    "singularName": "document",
+    "pluralName": "documents",
+    "displayName": "Document",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "blocks"
+    },
+    "author": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "documents"
+    },
+    "createdDate": {
+      "type": "datetime"
+    },
+    "updatedDate": {
+      "type": "datetime"
+    },
+    "version": {
+      "type": "integer"
+    },
+    "tags": {
+      "type": "string"
+    }
+  }
+}
