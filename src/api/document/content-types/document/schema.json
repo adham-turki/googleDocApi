@@ -15,26 +15,20 @@
     "title": {
       "type": "string"
     },
-    "content": {
-      "type": "blocks"
-    },
     "author": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
       "inversedBy": "documents"
     },
-    "createdDate": {
-      "type": "datetime"
+    "collaborators": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "collaboratedDocuments"
     },
-    "updatedDate": {
-      "type": "datetime"
-    },
-    "version": {
-      "type": "integer"
-    },
-    "tags": {
-      "type": "string"
+    "content": {
+      "type": "richtext"
     }
   }
 }

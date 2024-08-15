@@ -70,6 +70,18 @@
       "relation": "oneToMany",
       "target": "api::document.document",
       "mappedBy": "author"
+    },
+    "collaboratedDocuments": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::document.document",
+      "mappedBy": "collaborators"
+    },
+    "invitations": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::invitation.invitation",
+      "mappedBy": "user"
     }
   }
 }

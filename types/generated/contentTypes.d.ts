@@ -375,16 +375,17 @@ export interface ApiDocumentDocument extends Schema.CollectionType {
   };
   attributes: {
     title: Attribute.String;
-    content: Attribute.Blocks;
     author: Attribute.Relation<
       'api::document.document',
       'manyToOne',
       'plugin::users-permissions.user'
     >;
-    createdDate: Attribute.DateTime;
-    updatedDate: Attribute.DateTime;
-    version: Attribute.Integer;
-    tags: Attribute.String;
+    collaborators: Attribute.Relation<
+      'api::document.document',
+      'manyToMany',
+      'plugin::users-permissions.user'
+    >;
+    content: Attribute.RichText;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -396,6 +397,48 @@ export interface ApiDocumentDocument extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::document.document',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiInvitationInvitation extends Schema.CollectionType {
+  collectionName: 'invitations';
+  info: {
+    singularName: 'invitation';
+    pluralName: 'invitations';
+    displayName: 'Invitation';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    user: Attribute.Relation<
+      'api::invitation.invitation',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    document: Attribute.Relation<
+      'api::invitation.invitation',
+      'oneToOne',
+      'api::document.document'
+    >;
+    status: Attribute.Enumeration<['pending', 'accepted', 'declined']>;
+    content: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::invitation.invitation',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::invitation.invitation',
       'oneToOne',
       'admin::user'
     > &
@@ -816,6 +859,16 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::document.document'
     >;
+    collaboratedDocuments: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'manyToMany',
+      'api::document.document'
+    >;
+    invitations: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::invitation.invitation'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -844,6 +897,7 @@ declare module '@strapi/types' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'api::document.document': ApiDocumentDocument;
+      'api::invitation.invitation': ApiInvitationInvitation;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;
